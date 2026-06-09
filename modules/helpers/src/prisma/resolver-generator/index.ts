@@ -152,7 +152,7 @@ function generateResolverContent(model: any, modelMap: Map<string, any>): string
   return `import 'reflect-metadata'
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { GraphQLJSONObject } from 'graphql-type-json';
-import { PrismaClientService } from '@leandro-rosa/prisma-db-client';
+import { PrismaClientService } from '@l-rosa/prisma-db-client';
 import { ${modelName}Entity } from '../entities/${kebabCase(modelName)}';
 
 /**

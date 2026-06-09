@@ -1,5 +1,5 @@
 {
-  "name": "@leandro-rosa/prisma-db-client",
+  "name": "@l-rosa/prisma-db-client",
   "version": "0.1.0",
   "description": "Reusable NestJS Prisma DB client module",
   "license": "MIT",

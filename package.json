@@ -1,5 +1,5 @@
 {
-  "name": "@leandro-rosa/nestjs-common-modules",
+  "name": "@l-rosa/nestjs-common-modules",
   "version": "0.1.0",
   "private": true,
   "description": "Reusable NestJS common modules",

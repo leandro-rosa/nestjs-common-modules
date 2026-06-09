@@ -1,5 +1,5 @@
 {
-  "name": "@leandro-rosa/logger",
+  "name": "@l-rosa/logger",
   "version": "0.1.0",
   "description": "Reusable NestJS logger module",
   "license": "MIT",

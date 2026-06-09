@@ -1,5 +1,5 @@
 {
-  "name": "@leandro-rosa/cache",
+  "name": "@l-rosa/cache",
   "version": "0.1.0",
   "description": "Reusable NestJS cache module",
   "license": "MIT",

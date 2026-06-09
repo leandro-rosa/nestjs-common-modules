@@ -3,9 +3,9 @@ import { ConfigService } from '@nestjs/config'
 import * as ExcelJS from 'exceljs'
 import * as path from 'path'
 import * as fs from 'fs'
-import { S3Service } from '@leandro-rosa/aws'
-import { HoldItBullMQBroker } from '@leandro-rosa/hold-it'
-import { SearchCriteriaInterface } from '@leandro-rosa/prisma-db-client'
+import { S3Service } from '@l-rosa/aws'
+import { HoldItBullMQBroker } from '@l-rosa/hold-it'
+import { SearchCriteriaInterface } from '@l-rosa/prisma-db-client'
 
 @Injectable()
 export class XlsWriterService {
@@ -127,15 +127,15 @@ export class XlsWriterService {
     const wb = workbook ?? new ExcelJS.Workbook()
     const worksheet = wb.addWorksheet(worksheetData.worksheetName)
     let hasMoreData = true
-  
+
     while (hasMoreData) {
       const items = await worksheetData.getItems(page, pageSize, criteria)
-  
+
       if (items.length === 0) {
         hasMoreData = false
         break
       }
-  
+
       if (page === 0) {
         const firstItem = items[0]
         if (!firstItem) {
@@ -144,28 +144,27 @@ export class XlsWriterService {
 
         worksheet.columns = Object.keys(firstItem).map(key => ({ header: key, key }))
       }
-  
+
       items.forEach(item => {
         worksheet.addRow(item)
       })
-  
+
       page += 1
     }
-  
+
     const tempFilePath = path.join(__dirname, `${workbookFileName}.xlsx`)
     await wb.xlsx.writeFile(tempFilePath)
-  
+
     await this.s3Service.uploadFile(
       `${workbookFileName}.xlsx`,
       fs.createReadStream(tempFilePath, { encoding: 'utf-8', highWaterMark: 256 * 1024 }),
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     )
-  
+
     fs.unlinkSync(tempFilePath)
-  
+
     return wb
   }
-  
 
   async createWorksheetByEntity<T extends object>({
     entity,
@@ -186,12 +185,11 @@ export class XlsWriterService {
       worksheet = workbook.addWorksheet(entity.entityName)
       worksheet.columns = Object.keys(firstItem).map(key => ({ header: key, key }))
     }
-  
+
     for (const row of entity.items) {
       worksheet.addRow(row)
     }
-  
+
     return workbook
   }
-  
 }

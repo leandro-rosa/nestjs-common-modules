@@ -1,5 +1,5 @@
 {
-  "name": "@leandro-rosa/elasticsearch",
+  "name": "@l-rosa/elasticsearch",
   "version": "0.1.0",
   "description": "Reusable NestJS Elasticsearch module",
   "license": "MIT",

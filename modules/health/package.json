@@ -1,5 +1,5 @@
 {
-  "name": "@leandro-rosa/health",
+  "name": "@l-rosa/health",
   "version": "0.1.0",
   "description": "Reusable NestJS health module",
   "license": "MIT",

@@ -1,5 +1,5 @@
 {
-  "name": "@leandro-rosa/http-client",
+  "name": "@l-rosa/http-client",
   "version": "0.1.0",
   "description": "Reusable NestJS HTTP client module",
   "license": "MIT",
