@@ -1,0 +1,29 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "edit": "allow",
+    "bash": "allow"
+  },
+  "watcher": {
+    "ignore": ["**/node_modules/**", "**/dist/**", "**/coverage/**", "**/.git/**", "**/*.log", "**/package-lock.json"]
+  },
+  "instructions": ["AGENTS.md", "README.md"],
+  "command": {
+    "analyze": {
+      "description": "Analyze repository architecture",
+      "template": "Analyze this NestJS reusable modules monorepo. Identify architecture issues, missing exports, package boundaries, build problems, and publication risks."
+    },
+    "build": {
+      "description": "Build all modules",
+      "template": "Run npm run build and fix all TypeScript errors without changing public APIs unnecessarily."
+    },
+    "prepare-package": {
+      "description": "Prepare module as publishable package",
+      "template": "Prepare the selected module to be published as an independent npm package. Validate exports, package.json, tsconfig, dependencies, build output, and README."
+    },
+    "review-module": {
+      "description": "Review one module",
+      "template": "Review the selected module as a reusable NestJS library. Check SOLID, dependency boundaries, exports, naming, typing, tests, and production readiness."
+    }
+  }
+}

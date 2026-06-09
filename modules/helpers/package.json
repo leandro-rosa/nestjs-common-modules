@@ -1,0 +1,34 @@
+{
+  "name": "@leandro-rosa/helpers",
+  "version": "0.1.0",
+  "description": "Reusable TypeScript helper utilities",
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json",
+    "typecheck": "tsc -p tsconfig.lib.json --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@prisma/sdk": "^4.0.0",
+    "jsonwebtoken": "^9.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
