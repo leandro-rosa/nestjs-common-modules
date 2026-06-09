@@ -16,6 +16,7 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "baseUrl": ".",
     "paths": {
       "@leandro-rosa/aws": ["modules/aws/src"],
       "@leandro-rosa/cache": ["modules/cache/src"],
