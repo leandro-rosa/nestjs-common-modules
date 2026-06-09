@@ -118,11 +118,11 @@ export class HoldItBullMQBroker implements HoldItBrokerInterface {
    */
   async isHealthy(): Promise<{ status: boolean; details?: object }> {
     const queues = this.queueMap.values()
-    const details = {}
+    const details: Record<string, string> = {}
 
     for (const queue of queues) {
       try {
-        const queueClient = await queue.client
+        const queueClient = (await queue.client) as unknown as { ping(): Promise<unknown> }
         const pong = await queueClient.ping()
 
         console.log({ pong })

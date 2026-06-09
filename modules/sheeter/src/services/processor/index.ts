@@ -4,8 +4,8 @@ import { Readable as NodeReadable } from 'stream'
 import { ReadableStream as WebReadableStream } from 'stream/web'
 import * as ExcelJS from 'exceljs'
 import slugify from 'slugify'
-import { SheeterProcessMessageDto } from '@app/sheeter/dto/queue'
-import { HoldItBullMQBroker } from '@app/hold-it/services/brokers/bull-mq'
+import { HoldItBullMQBroker } from '@leandro-rosa/hold-it'
+import { SheeterProcessMessageDto } from '../../dto/queue'
 import { promises as fsp } from 'fs'
 import * as XLSX from 'xlsx'
 import { Job } from 'bullmq'
@@ -284,14 +284,21 @@ export class SheeterProcessorService {
    * Convert a SheetJS workbook to RowsPerSheet structure.
    */
   private rowsPerSheetFromSheetJS(wb: XLSX.WorkBook): RowsPerSheet {
-    return wb.SheetNames.map(name => ({
-      sheet: name,
-      rows: XLSX.utils.sheet_to_json<any[]>(wb.Sheets[name], {
+    return wb.SheetNames.map(name => {
+      const sheet = wb.Sheets[name]
+      if (!sheet) {
+        return { sheet: name, rows: [] }
+      }
+
+      return {
+        sheet: name,
+        rows: XLSX.utils.sheet_to_json<any[]>(sheet, {
         header: 1,
         blankrows: false,
         defval: null,
       }),
-    }))
+      }
+    })
   }
 
   // -------------------------------

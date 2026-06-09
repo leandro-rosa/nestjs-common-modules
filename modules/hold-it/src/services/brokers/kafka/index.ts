@@ -24,7 +24,7 @@ import { COMPATIBILITY, SchemaRegistry } from '@kafkajs/confluent-schema-registr
 import { AvroConfluentSchema, RawAvroSchema } from '@kafkajs/confluent-schema-registry/dist/@types'
 import { randomUUID } from 'crypto'
 import { KafkaDlqService } from './dlq'
-import { DlqEnvelope } from '@app/hold-it/interfaces/kafka-dlq.interface'
+import { DlqEnvelope } from '../../../interfaces/kafka-dlq.interface'
 import { setTimeout } from 'timers/promises'
 import { HoldItElasticsearchService } from '../../elasticsearch'
 

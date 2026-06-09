@@ -5,8 +5,8 @@ import {
   QueueJobCounts,
   ReprocessFailedJobsOptions,
   ReprocessFailedJobsResult,
-} from '@app/hold-it/interfaces/bullmq.interface'
-import { HOLD_IT_QUEUE_NAMES } from '@app/hold-it/types'
+} from '../../interfaces/bullmq.interface'
+import { HOLD_IT_QUEUE_NAMES } from '../../types'
 
 @Injectable()
 export class BullMQService {
@@ -137,13 +137,17 @@ export class BullMQService {
             if (errorSamples.length < 10) {
               errorSamples.push({
                 jobId: String(job.id ?? ''),
-                message: err?.message ?? String(err),
+                message: err instanceof Error ? err.message : String(err),
               })
             }
           }
         }
       } catch (err) {
-        this.logger.error({ queue: queue.name }, err.stack ?? err.message ?? String(err), 'ERROR_RETRYING_FAILED_JOBS')
+        this.logger.error(
+          { queue: queue.name },
+          err instanceof Error ? err.stack ?? err.message : String(err),
+          'ERROR_RETRYING_FAILED_JOBS',
+        )
         errors += 1
         continue
       }
@@ -176,7 +180,9 @@ export class BullMQService {
    * Acquires a per-queue distributed lock using Redis SET NX PX.
    */
   private async acquireQueueLock(queue: Queue, key: string, ttlMs: number): Promise<boolean> {
-    const client = await queue.client
+    const client = (await queue.client) as unknown as {
+      set(key: string, value: string, mode: 'PX', ttl: number, condition: 'NX'): Promise<'OK' | null>
+    }
     const value = `${process.pid}:${Date.now()}`
     const result = await client.set(key, value, 'PX', ttlMs, 'NX')
     return result === 'OK'

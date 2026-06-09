@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import crypto from 'node:crypto'
 import type { IHeaders, KafkaMessage } from 'kafkajs'
-import { DlqEnvelope, DlqErrorInfo, FailureType } from '@app/hold-it/interfaces/kafka-dlq.interface'
+import { DlqEnvelope, DlqErrorInfo, FailureType } from '../../../../interfaces/kafka-dlq.interface'
 
 @Injectable()
 export class KafkaDlqService {

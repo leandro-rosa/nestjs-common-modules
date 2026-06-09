@@ -3,9 +3,9 @@ import { ConfigService } from '@nestjs/config'
 import * as ExcelJS from 'exceljs'
 import * as path from 'path'
 import * as fs from 'fs'
-import { S3Service } from '@app/aws/s3'
-import { HoldItBullMQBroker } from '@app/hold-it/services/brokers/bull-mq'
-import { SearchCriteriaInterface } from 'libs/autho-parts-db-client/src/criteria'
+import { S3Service } from '@leandro-rosa/aws'
+import { HoldItBullMQBroker } from '@leandro-rosa/hold-it'
+import { SearchCriteriaInterface } from '@leandro-rosa/prisma-db-client'
 
 @Injectable()
 export class XlsWriterService {
@@ -56,7 +56,7 @@ export class XlsWriterService {
       await workbook.xlsx.writeFile(filePath)
       return `Registro adicionado ao arquivo existente: ${filePath}`
     } catch (error) {
-      throw new Error(`Erro ao adicionar o registro: ${error.message}`)
+      throw new Error(`Erro ao adicionar o registro: ${error instanceof Error ? error.message : String(error)}`)
     }
   }
 
@@ -70,12 +70,17 @@ export class XlsWriterService {
     items: Record<string, any>[]
   }): Promise<string> {
     try {
+      const firstItem = items[0]
+      if (!firstItem) {
+        return `Novo arquivo criado e registro adicionado: ${filePath}`
+      }
+
       const isNewFile = !fs.existsSync(filePath)
 
       if (isNewFile) {
         const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({ filename: filePath })
         const worksheet = workbook.addWorksheet(worksheetName)
-        worksheet.columns = Object.keys(items[0]).map(key => ({ header: key, key }))
+        worksheet.columns = Object.keys(firstItem).map(key => ({ header: key, key }))
         await Promise.all(items.map(item => worksheet.addRow(item).commit()))
 
         await workbook.commit()
@@ -90,14 +95,14 @@ export class XlsWriterService {
         worksheet = workbook.addWorksheet(worksheetName)
       }
 
-      worksheet.columns = Object.keys(items[0]).map(key => ({ header: key, key }))
+      worksheet.columns = Object.keys(firstItem).map(key => ({ header: key, key }))
 
       await Promise.all(items.map(item => worksheet.addRow(item)))
 
       await workbook.xlsx.writeFile(filePath)
       return `Novo arquivo criado e registro adicionado: ${filePath}`
     } catch (error) {
-      throw new Error(`Erro ao adicionar o registro: ${error.message}`)
+      throw new Error(`Erro ao adicionar o registro: ${error instanceof Error ? error.message : String(error)}`)
     }
   }
 
@@ -132,7 +137,12 @@ export class XlsWriterService {
       }
   
       if (page === 0) {
-        worksheet.columns = Object.keys(items[0]).map(key => ({ header: key, key }))
+        const firstItem = items[0]
+        if (!firstItem) {
+          break
+        }
+
+        worksheet.columns = Object.keys(firstItem).map(key => ({ header: key, key }))
       }
   
       items.forEach(item => {
@@ -168,8 +178,13 @@ export class XlsWriterService {
   }) {
     let worksheet = workbook.getWorksheet(entity.entityName)
     if (!worksheet) {
+      const firstItem = entity.items[0]
+      if (!firstItem) {
+        return workbook
+      }
+
       worksheet = workbook.addWorksheet(entity.entityName)
-      worksheet.columns = Object.keys(entity.items[0]).map(key => ({ header: key, key }))
+      worksheet.columns = Object.keys(firstItem).map(key => ({ header: key, key }))
     }
   
     for (const row of entity.items) {

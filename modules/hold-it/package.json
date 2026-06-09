@@ -1,7 +1,6 @@
 {
   "name": "@leandro-rosa/hold-it",
   "version": "0.1.0",
-  "private": true,
   "description": "Reusable NestJS job and broker module",
   "license": "MIT",
   "type": "commonjs",
@@ -20,6 +19,11 @@
     },
     "./package.json": "./package.json"
   },
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json",
+    "typecheck": "tsc -p tsconfig.lib.json --noEmit",
+    "clean": "rm -rf dist"
+  },
   "dependencies": {
     "@bull-board/api": "^6.0.0",
     "@bull-board/fastify": "^6.0.0",
@@ -37,5 +41,8 @@
     "@nestjs/config": "^3.0.0 || ^4.0.0",
     "@nestjs/core": "^10.0.0 || ^11.0.0",
     "@nestjs/event-emitter": "^2.0.0 || ^3.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

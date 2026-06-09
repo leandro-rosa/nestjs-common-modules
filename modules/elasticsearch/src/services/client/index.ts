@@ -1,17 +1,20 @@
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
+import { Injectable, Logger, OnModuleInit, Optional } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Client } from '@elastic/elasticsearch'
-import { HoldItBullMQBroker } from '@app/hold-it/services/brokers/bull-mq'
+
+type GuardQueueBroker = {
+  holdIt(params: { message: unknown; queueName: string }): Promise<unknown>
+}
 
 @Injectable()
 export class ElasticsearchClientService implements OnModuleInit {
   private readonly logger: Logger = new Logger(ElasticsearchClientService.name)
 
   protected INSTANCE?: Client
-  n
+
   constructor(
     private readonly configService: ConfigService,
-    private readonly bullBroker: HoldItBullMQBroker,
+    @Optional() private readonly bullBroker?: GuardQueueBroker,
   ) {}
 
   onModuleInit() {
@@ -121,7 +124,7 @@ export class ElasticsearchClientService implements OnModuleInit {
       const items = hits?.map((h: any) => h._source as T)
       const lastSort = hits.length ? hits[hits.length - 1]?.sort : []
 
-      if (Object.keys(guardOptions).length > 0) {
+      if (this.bullBroker && Object.keys(guardOptions).length > 0) {
         await this.bullBroker.holdIt({
           message: { payload, response, guardOptions },
           queueName: 'elasticsearch-guard',

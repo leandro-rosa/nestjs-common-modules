@@ -4,8 +4,8 @@ import * as path from 'path'
 import { createObjectCsvWriter } from 'csv-writer'
 import * as readline from 'readline'
 import { ConfigService } from '@nestjs/config'
-import { SearchCriteriaInterface } from 'libs/autho-parts-db-client/src/criteria'
-import { S3Service } from '@app/aws/s3'
+import { SearchCriteriaInterface } from '@leandro-rosa/prisma-db-client'
+import { S3Service } from '@leandro-rosa/aws'
 
 @Injectable()
 export class CsvWriterService {
@@ -28,7 +28,7 @@ export class CsvWriterService {
       await csvWriter.writeRecords([data])
       return `Registro adicionado ao arquivo CSV: ${filePath}`
     } catch (error) {
-      throw new Error(`Erro ao adicionar o registro: ${error.message}`)
+      throw new Error(`Erro ao adicionar o registro: ${error instanceof Error ? error.message : String(error)}`)
     }
   }
 
@@ -42,19 +42,24 @@ export class CsvWriterService {
     headers?: { id: string; title: string }[]
   }): Promise<string> {
     try {
+      const firstItem = items[0]
+      if (!firstItem) {
+        return `Registros adicionados ao arquivo CSV: ${filePath}`
+      }
+
       const isNewFile = !fs.existsSync(filePath)
 
       // Configuração do CSV Writer
       const csvWriter = createObjectCsvWriter({
         path: filePath,
-        header: headers || Object.keys(items[0]).map(key => ({ id: key, title: key })),
+        header: headers || Object.keys(firstItem).map(key => ({ id: key, title: key })),
         append: !isNewFile,
       })
 
       await csvWriter.writeRecords(items)
       return `Registros adicionados ao arquivo CSV: ${filePath}`
     } catch (error) {
-      throw new Error(`Erro ao adicionar os registros: ${error.message}`)
+      throw new Error(`Erro ao adicionar os registros: ${error instanceof Error ? error.message : String(error)}`)
     }
   }
 
@@ -87,8 +92,13 @@ export class CsvWriterService {
         }
 
         if (page === 0 && isNewFile) {
+          const firstItem = items[0]
+          if (!firstItem) {
+            break
+          }
+
           // Escrever cabeçalho
-          const headers = Object.keys(items[0]).join(',')
+          const headers = Object.keys(firstItem).join(',')
           writeStream.write(headers + '\n')
           items.forEach(item => Object.keys(item).forEach(key => headersSet.add(key)))
         }
@@ -119,7 +129,7 @@ export class CsvWriterService {
       await this.s3Service.uploadFile(s3Key, fileStream, 'text/csv')
       return `Arquivo CSV enviado para o S3: ${s3Key}`
     } catch (error) {
-      throw new Error(`Erro ao enviar o arquivo para o S3: ${error.message}`)
+      throw new Error(`Erro ao enviar o arquivo para o S3: ${error instanceof Error ? error.message : String(error)}`)
     }
   }
 }

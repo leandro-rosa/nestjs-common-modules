@@ -3,7 +3,6 @@ import { HttpService } from '@nestjs/axios'
 import { AxiosResponse } from 'axios'
 import { RequestDTO, ResponseDTO } from './types'
 import { of } from 'rxjs'
-import { faker } from '@faker-js/faker'
 import { Test } from '@nestjs/testing'
 
 const mockHttpService = {
@@ -38,8 +37,8 @@ describe.skip('AxiosHttpClient', () => {
         url: 'https://example.com',
         payload: { key: 'value' },
         http_method: 'POST',
-        entity_id: faker.number.int(),
-        entity_type: faker.word.verb(),
+        entity_id: 1,
+        entity_type: 'product',
       }
 
       const responseData = { result: 'success' }
@@ -63,7 +62,7 @@ describe.skip('AxiosHttpClient', () => {
       const result = await httpClient.send(request)
 
       expect(result).toEqual(expectedResponse)
-      expect(mockDatadogAsyncLogManagerService.createAsyncLog).toBeCalledWith({
+      expect(mockDatadogAsyncLogManagerService.createAsyncLog).toHaveBeenCalledWith({
         data: {
           entity_type: request.entity_type,
           entity_id: request.entity_id,
@@ -106,7 +105,7 @@ describe.skip('AxiosHttpClient', () => {
       const result = await httpClient.send(request)
 
       expect(result).toEqual(expectedResponse)
-      expect(mockDatadogAsyncLogManagerService.createAsyncLog).toBeCalledWith({
+      expect(mockDatadogAsyncLogManagerService.createAsyncLog).toHaveBeenCalledWith({
         data: {
           entity_type: request.entity_type,
           entity_id: request.entity_id,
@@ -142,7 +141,7 @@ describe.skip('AxiosHttpClient', () => {
       const result = await httpClient.send(request)
 
       expect(result).toEqual(expectedResponse)
-      expect(mockDatadogAsyncLogManagerService.createAsyncLog).toBeCalledWith({
+      expect(mockDatadogAsyncLogManagerService.createAsyncLog).toHaveBeenCalledWith({
         data: {
           entity_type: request.entity_type,
           entity_id: request.entity_id,
