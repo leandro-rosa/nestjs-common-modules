@@ -15,6 +15,18 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@leandro-rosa/aws": ["modules/aws/src"],
+      "@leandro-rosa/cache": ["modules/cache/src"],
+      "@leandro-rosa/elasticsearch": ["modules/elasticsearch/src"],
+      "@leandro-rosa/health": ["modules/health/src"],
+      "@leandro-rosa/helpers": ["modules/helpers/src"],
+      "@leandro-rosa/hold-it": ["modules/hold-it/src"],
+      "@leandro-rosa/http-client": ["modules/http-client/src"],
+      "@leandro-rosa/logger": ["modules/logger/src"],
+      "@leandro-rosa/prisma-db-client": ["modules/prisma-db-client/src"],
+      "@leandro-rosa/sheeter": ["modules/sheeter/src"]
+    }
   }
 }
