@@ -4,8 +4,8 @@ import * as path from 'path'
 import { createObjectCsvWriter } from 'csv-writer'
 import * as readline from 'readline'
 import { ConfigService } from '@nestjs/config'
-import { SearchCriteriaInterface } from '@l-rosa/prisma-db-client'
-import { S3Service } from '@l-rosa/aws'
+import { SearchCriteriaInterface } from '@leandro-rosa/prisma-db-client'
+import { S3Service } from '@leandro-rosa/aws'
 
 @Injectable()
 export class CsvWriterService {

@@ -1,5 +1,5 @@
 {
-  "name": "@l-rosa/hold-it",
+  "name": "@leandro-rosa/hold-it",
   "version": "0.1.0",
   "description": "Reusable NestJS job and broker module",
   "license": "MIT",
@@ -29,7 +29,7 @@
     "@bull-board/fastify": "^6.0.0",
     "@elastic/elasticsearch": "^8.0.0",
     "@kafkajs/confluent-schema-registry": "^3.0.0",
-    "@l-rosa/elasticsearch": "0.1.0",
+    "@leandro-rosa/elasticsearch": "0.1.0",
     "avsc": "^5.7.0",
     "bull": "^4.0.0",
     "bullmq": "^5.0.0",

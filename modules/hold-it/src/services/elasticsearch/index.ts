@@ -1,6 +1,6 @@
 import { Injectable, Logger, Post } from '@nestjs/common'
 import type { estypes } from '@elastic/elasticsearch'
-import { ElasticsearchClientService } from '@l-rosa/elasticsearch'
+import { ElasticsearchClientService } from '@leandro-rosa/elasticsearch'
 import { DlqEnvelope } from '../../interfaces/kafka-dlq.interface'
 
 type MappingTypeMapping = estypes.MappingTypeMapping

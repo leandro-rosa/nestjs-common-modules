@@ -1,5 +1,5 @@
 {
-  "name": "@l-rosa/aws",
+  "name": "@leandro-rosa/aws",
   "version": "0.1.0",
   "description": "Reusable NestJS AWS helpers",
   "license": "MIT",

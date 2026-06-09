@@ -3,9 +3,9 @@ import { ConfigService } from '@nestjs/config'
 import * as ExcelJS from 'exceljs'
 import * as path from 'path'
 import * as fs from 'fs'
-import { S3Service } from '@l-rosa/aws'
-import { HoldItBullMQBroker } from '@l-rosa/hold-it'
-import { SearchCriteriaInterface } from '@l-rosa/prisma-db-client'
+import { S3Service } from '@leandro-rosa/aws'
+import { HoldItBullMQBroker } from '@leandro-rosa/hold-it'
+import { SearchCriteriaInterface } from '@leandro-rosa/prisma-db-client'
 
 @Injectable()
 export class XlsWriterService {

@@ -1,5 +1,5 @@
 {
-  "name": "@l-rosa/sheeter",
+  "name": "@leandro-rosa/sheeter",
   "version": "0.1.0",
   "description": "Reusable NestJS spreadsheet processing module",
   "license": "MIT",
@@ -25,9 +25,9 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@l-rosa/aws": "0.1.0",
-    "@l-rosa/hold-it": "0.1.0",
-    "@l-rosa/prisma-db-client": "0.1.0",
+    "@leandro-rosa/aws": "0.1.0",
+    "@leandro-rosa/hold-it": "0.1.0",
+    "@leandro-rosa/prisma-db-client": "0.1.0",
     "bullmq": "^5.0.0",
     "csv-writer": "^1.6.0",
     "exceljs": "^4.4.0",
